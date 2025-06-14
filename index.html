@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Golf Handicap Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Golf Handicap Tracker</h1>
 
+  <form id="round-form">
+    <fieldset>
+      <legend>Enter 9-Hole Round</legend>
+      <label>Date: <input type="date" id="date" required></label>
+      <label>Course: <input type="text" id="course" required></label>
+      <label>Tee: <input type="text" id="tee" required></label>
+      <label>AG: <input type="number" id="ag" step="0.1" required></label>
+      <label>CR: <input type="number" id="cr" step="0.1" required></label>
+      <label>Slope: <input type="number" id="slope" step="1" required></label>
+      <label>PCC (default 0): <input type="number" id="pcc" step="0.5" value="0"></label>
+      <button type="submit">Add Round</button>
+    </fieldset>
+  </form>
+
+  <h2>Recent Rounds</h2>
+  <table id="round-table">
+    <thead>
+      <tr><th>Date</th><th>Course</th><th>AG</th><th>CR</th><th>Slope</th><th>PCC</th><th>SD</th><th>Edit</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Current Handicap Index</h2>
+  <p id="handicap-index">Loading...</p>
+
+  <button onclick="exportBackup()">Export Backup</button>
+  <input type="file" onchange="importBackup(event)">
+
+  <script src="app.js"></script>
+  <script src="data-backup.js"></script>
+</body>
+</html>
