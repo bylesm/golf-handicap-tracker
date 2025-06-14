@@ -1,1 +1,33 @@
 
+body {
+  font-family: sans-serif;
+  margin: 2em;
+  background: #f9f9f9;
+}
+
+form fieldset {
+  border: 1px solid #ccc;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+label {
+  display: block;
+  margin: 0.5em 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.5em;
+  text-align: center;
+}
+
+input[type="number"], input[type="text"], input[type="date"] {
+  width: 8em;
+}
