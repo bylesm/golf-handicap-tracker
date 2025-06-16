@@ -36,6 +36,7 @@ function renderTable(rounds) {
       <td>${r.slope}</td>
       <td>${r.pcc}</td>
       <td>${r.sd_combined.toFixed(1)}</td>
+      <td>${r.holes}</td>
       <td><button onclick="editRound(${i})">Edit</button></td>
     `;
   });
@@ -48,9 +49,13 @@ function editRound(index) {
   const newPcc = parseFloat(prompt("New PCC value", r.pcc));
   if (!isNaN(newPcc)) {
     r.pcc = newPcc;
-    r.sd_actual = calculate9HoleSD(r.ag, r.cr, r.slope, r.pcc);
-    r.sd_estimated = calculateESD(r.ag, r.cr, r.slope, r.pcc);
-    r.sd_combined = r.sd_actual + r.sd_estimated;
+    if (r.holes === 18) {
+      r.sd_combined = (113 / r.slope) * (r.ag - r.cr) + r.pcc;
+    } else {
+      r.sd_actual = calculate9HoleSD(r.ag, r.cr, r.slope, r.pcc);
+      r.sd_estimated = calculateESD(r.ag, r.cr, r.slope, r.pcc);
+      r.sd_combined = r.sd_actual + r.sd_estimated;
+    }
     r.finalised = true;
     saveRounds(rounds);
     renderTable(rounds);
@@ -60,19 +65,28 @@ function editRound(index) {
 document.getElementById("round-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const rounds = loadRounds();
+  const holes = parseInt(document.getElementById("holes").value);
+
   const r = {
     date: document.getElementById("date").value,
     course: document.getElementById("course").value,
     tee: document.getElementById("tee").value,
+    holes: holes,
     ag: parseFloat(document.getElementById("ag").value),
     cr: parseFloat(document.getElementById("cr").value),
     slope: parseInt(document.getElementById("slope").value),
     pcc: parseFloat(document.getElementById("pcc").value),
-    finalised: false
+    finalised: holes === 18
   };
-  r.sd_actual = calculate9HoleSD(r.ag, r.cr, r.slope, r.pcc);
-  r.sd_estimated = calculateESD(r.ag, r.cr, r.slope, r.pcc);
-  r.sd_combined = r.sd_actual + r.sd_estimated;
+
+  if (holes === 18) {
+    r.sd_combined = (113 / r.slope) * (r.ag - r.cr) + r.pcc;
+  } else {
+    r.sd_actual = calculate9HoleSD(r.ag, r.cr, r.slope, r.pcc);
+    r.sd_estimated = calculateESD(r.ag, r.cr, r.slope, r.pcc);
+    r.sd_combined = r.sd_actual + r.sd_estimated;
+  }
+
   rounds.push(r);
   saveRounds(rounds);
   renderTable(rounds);
